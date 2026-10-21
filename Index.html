@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Page</title>
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg: #000000;        /* AMOLED black */
+    --bar: #080808;
+    --field: #111111;
+    --border: #1d1d1d;
+    --text: #eaeaea;
+    --muted: #8c8c8c;
+    --accent: #ffd400;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+  }
+
+  #container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ---------- Tabs ---------- */
+  #tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    width: 100%;
+    padding: 8px 0;
+    background: var(--bar);
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
+  }
+
+  .tab {
+    flex: 0 0 auto;
+    padding: 14px 18px;
+    color: #ccc;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all .2s;
+  }
+  .tab:hover { background: #151515; color: #fff; }
+  .tab.active {
+    background: #1a1a1a;
+    color: var(--accent);
+    border-bottom: 3px solid var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    #tabs {
+      gap: 4px;
+      padding: 6px 8px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      touch-action: pan-x;
+    }
+    #tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .tab.active { border-bottom: none; }
+  }
+
+  /* ---------- Search ---------- */
+  #content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  #search-bar {
+    padding: 12px 15px;
+    background: var(--bar);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #search-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    background: var(--field);
+    color: var(--text);
+    border: 1px solid #333;
+    border-radius: 8px;
+    outline: none;
+  }
+  #search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 212, 0, 0.2);
+  }
+
+  /* ---------- Content ---------- */
+  #content {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    line-height: 1.6;
+    font-family: 'Courier New', monospace;
+    font-size: 14.5px;
+  }
+  #content pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+  }
+
+  .highlight {
+    background: var(--accent);
+    color: #000;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  .bold { font-weight: bold; color: #f5dab3; }
+</style>
+</head>
+<body>
+  <div id="container">
+    <div id="tabs"></div>
+
+    <div id="content-area">
+      <div id="search-bar">
+        <input type="text" id="search-input" placeholder="Search...">
+      </div>
+      <div id="content"></div>
+    </div>
+  </div>
+
+<script>
+/* ============================================================
+   EDIT YOUR CONTENT HERE
+   Each key becomes a tab. Wrap text in **double stars** for bold.
+   ============================================================ */
+const data = {
+  "Flow": `**Flow**
+
+**Isagi**
+"97666009273082" overtime:117718425060365
+MY DIRECT SHOT(Spatial Awareness):133445984149237
+**Shidou**
+"72083033501066" BBD:112890423660657
+
+**Nagi**
+"81241396410931" Heavy:134175482014317 Old:They are the same with the new one.
+
+**Sae**
+"117457178455064" Overtime:"105145202264905"
+
+**Kaiser**
+"121393632633845"
+
+**NEL Isagi**
+Ball variant:"98164282634205" off-ball Variant:"104435704536320"
+Overtime:"104549748293370"
+
+**Barou**
+"120183091285726" Steal:"93921168768060"
+
+**Rin**
+"93926352027457 (It Starts at 24.9 Idk why)" Overtime:"110200925493621(Starts at 22.5)"
+
+**Chigiri**
+"100528292772132"
+
+**Gagamaru (The Goat)**
+"94400324074927"
+
+**tokimitsu**
+"94400324074927"
+
+**Hiori (The Goat)**
+"85016161107998"
+
+**Kurona (My Sharky Boy)**
+"99516799419598"
+
+**Yukimiya**
+"116410471200831" SSD:"137680915935526"
+
+**Otoya**
+"108984867684038" RNP:"136564215176578"
+
+**Rich Chameleon Guy (Reo)**
+"109749408063338" NO im NOT adding the Copy variants. ask lloyd or darker.
+
+**Kunigami**
+"82156042328835"
+
+**Kiyora/Exe**
+"112562176189153 (Starts at 06.2)
+
+**Don Lorenzo**
+"100291730628488 (Starts at 07.3)"
+
+**Crow guy Karasu**
+"132428939807144"
+
+**Placeholder**
+"71113906223045 (Starts at 13.6)"
+
+  "Emote": `**Emote**
+
+**No, Not yet.**
+
+  "Misc": `**Misc**
+
+**No, Not Yet.**`,
+};
+
+/* ============================================================ */
+const tabsEl = document.getElementById("tabs");
+const contentEl = document.getElementById("content");
+const searchInput = document.getElementById("search-input");
+
+let highlights = [];
+let currentIndex = -1;
+let searchTimeout = null;
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function convertBold(text) {
+  return text.replace(/\*\*(.*?)\*\*/g, '<span class="bold">$1</span>');
+}
+
+function render(text) {
+  contentEl.innerHTML = `<pre>${convertBold(escapeHtml(text))}</pre>`;
+}
+
+function performSearch(term) {
+  const raw = contentEl.dataset.raw;
+  if (raw === undefined) return;
+
+  highlights = [];
+  currentIndex = -1;
+
+  if (!term) { render(raw); return; }
+
+  const escapedTerm = escapeHtml(term).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escapedTerm})`, "gi");
+  const highlighted = convertBold(escapeHtml(raw).replace(regex, '<span class="highlight">$1</span>'));
+
+  contentEl.innerHTML = `<pre>${highlighted}</pre>`;
+  highlights = Array.from(contentEl.querySelectorAll(".highlight"));
+  currentIndex = highlights.length ? 0 : -1;
+}
+
+function createTab(key) {
+  const tab = document.createElement("div");
+  tab.className = "tab";
+  tab.textContent = key;
+  tab.onclick = () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    tab.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+
+    const text = data[key] || "Content not found";
+    contentEl.dataset.raw = text;
+    render(text);
+
+    searchInput.value = "";
+    highlights = [];
+    currentIndex = -1;
+  };
+  tabsEl.appendChild(tab);
+}
+
+Object.keys(data).forEach(createTab);
+tabsEl.querySelector(".tab")?.click();
+
+searchInput.addEventListener("input", e => {
+  clearTimeout(searchTimeout);
+  const term = e.target.value.trim();
+  searchTimeout = setTimeout(() => performSearch(term), 150);
+});
+
+searchInput.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  if (!highlights.length) return;
+  currentIndex = (currentIndex + 1) % highlights.length;
+  highlights[currentIndex].scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+</body>
+</html>
